@@ -1,21 +1,28 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta charset="utf-8">
   <title>2048</title>
 
   <link href="style/main.css" rel="stylesheet" type="text/css">
+  <link href="style/ai.css" rel="stylesheet" type="text/css">
   <link rel="shortcut icon" href="favicon.ico">
   <link rel="apple-touch-icon" href="meta/apple-touch-icon.png">
-  <link rel="apple-touch-startup-image" href="meta/apple-touch-startup-image-640x1096.png" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)"> <!-- iPhone 5+ -->
-  <link rel="apple-touch-startup-image" href="meta/apple-touch-startup-image-640x920.png"  media="(device-width: 320px) and (device-height: 480px) and (-webkit-device-pixel-ratio: 2)"> <!-- iPhone, retina -->
+  <link rel="apple-touch-startup-image" href="meta/apple-touch-startup-image-640x1096.png"
+    media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)"> <!-- iPhone 5+ -->
+  <link rel="apple-touch-startup-image" href="meta/apple-touch-startup-image-640x920.png"
+    media="(device-width: 320px) and (device-height: 480px) and (-webkit-device-pixel-ratio: 2)">
+  <!-- iPhone, retina -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
 
   <meta name="HandheldFriendly" content="True">
   <meta name="MobileOptimized" content="320">
-  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0, maximum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="viewport"
+    content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0, maximum-scale=1, user-scalable=no, minimal-ui">
 </head>
+
 <body>
   <div class="container">
     <div class="heading">
@@ -35,7 +42,7 @@
       <div class="game-message">
         <p></p>
         <div class="lower">
-	        <a class="keep-playing-button">Keep going</a>
+          <a class="keep-playing-button">Keep going</a>
           <a class="retry-button">Try again</a>
         </div>
       </div>
@@ -71,17 +78,38 @@
 
       </div>
     </div>
-
     <p class="game-explanation">
-      <strong class="important">How to play:</strong> Use your <strong>arrow keys</strong> to move the tiles. When two tiles with the same number touch, they <strong>merge into one!</strong>
+    <h2 class="AIplayer">AI 玩家(AI Player)</h2>
+    <label class="switch">
+      <input type="checkbox" id = "AIisOpen">
+      <span class="slider"></span>
+    </label>
+    <div class="AIinput-container">
+      <label for="myInput">執行一步的間隔(Execution step interval) :</label>
+      <input type="number" id="AIinput" value="300">
+      <label for="myInput">毫秒(ms)</label>
+    </div>
     </p>
     <hr>
     <p>
-    <strong class="important">Note:</strong> This site is the official version of 2048. You can play it on your phone via <a href="http://git.io/2048">http://git.io/2048.</a> All other apps or sites are derivatives or fakes, and should be used with caution.
+      <strong class="important">遊戲說明 :</strong> 使用 <strong>方向鍵</strong> 移動方塊. 當兩個相同數字的方塊碰撞時，它們會
+      <strong>合併成一個方塊！</strong>
+      <br>
+      <strong class="important">How to play :</strong> Use your <strong>arrow keys</strong> to move the tiles. When two
+      tiles with the same number touch, they <strong>merge into one!</strong>
     </p>
     <hr>
     <p>
-    Created by <a href="http://gabrielecirulli.com" target="_blank">Gabriele Cirulli.</a> Based on <a href="https://itunes.apple.com/us/app/1024!/id823499224" target="_blank">1024 by Veewo Studio</a> and conceptually similar to <a href="http://asherv.com/threes/" target="_blank">Threes by Asher Vollmer.</a>
+      由 <a href="https://github.com/jx06T" target="_blank">jx06T</a> 創建的AI玩家 <a href="https://github.com/jx06T/2048-AI"
+        target="_blank">(原始碼)</a>
+      基於 <a href="https://github.com/gabrielecirulli" target="_blank">Gabriele Cirulli.</a> 的經典 <a
+        href="https://play2048.co/" target="_blank">2048遊戲</a> 。
+      <br>
+      AI players created by <a href="https://github.com/jx06T" target="_blank">jx06T.</a> <a
+        href="https://github.com/jx06T/2048-AI" target="_blank">(Source code)</a>
+      Adapted from the classic <a href="https://play2048.co/" target="_blank">2048 game</a> by <a
+        href="https://github.com/gabrielecirulli" target="_blank">Gabriele Cirulli.</a>
+
     </p>
   </div>
 
@@ -94,6 +122,8 @@
   <script src="js/tile.js"></script>
   <script src="js/local_storage_manager.js"></script>
   <script src="js/game_manager.js"></script>
+  <script src="js/ai.js"></script>
   <script src="js/application.js"></script>
 </body>
+
 </html>
