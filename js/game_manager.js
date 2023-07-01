@@ -189,7 +189,8 @@ GameManager.prototype.move = function (direction) {
 
     this.actuate();
   }
-  console.log("sss")
+  console.log(this.AI.speed)
+  setTimeout(() => { this.move(this.AI.GetNextStep()) }, this.AI.speed)
 };
 
 // Get the vector representing the chosen direction

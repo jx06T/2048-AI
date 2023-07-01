@@ -6,7 +6,9 @@ class GameAI {
     }
     // Restart the game
     GetNextStep() {
-        return Math.floor(Math.random() * 4)
+        let next = Math.floor(Math.random() * 4)
+        console.log(next)
+        return next
     }
     listen() {
         const AIinput = document.getElementById("AIinput")
