@@ -695,6 +695,10 @@ hr {
   clear: both;
 }
 
+.above-game {
+  margin-bottom: -8px;
+  margin-top: -15px;
+}
 .game-intro {
   float: left;
   line-height: 42px;
