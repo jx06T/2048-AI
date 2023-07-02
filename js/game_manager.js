@@ -1,17 +1,19 @@
-function GameManager(size, InputManager, Actuator, StorageManager, GameAI) {
+function GameManager(size, InputManager, Actuator, StorageManager) {
   this.size = size; // Size of the grid
   this.inputManager = new InputManager;
   this.storageManager = new StorageManager;
   this.actuator = new Actuator;
-  this.AI = new GameAI
 
   this.startTiles = 2;
 
   this.inputManager.on("move", this.move.bind(this));
   this.inputManager.on("restart", this.restart.bind(this));
   this.inputManager.on("keepPlaying", this.keepPlaying.bind(this));
-
+  
   this.setup();
+  // ---------------------------
+  this.keepPlaying = true;
+  // ---------------------------
 }
 
 // Restart the game
@@ -35,7 +37,12 @@ GameManager.prototype.isGameTerminated = function () {
 // Set up the game
 GameManager.prototype.setup = function () {
   var previousState = this.storageManager.getGameState();
+  // ----------------------------------------------------
+  if (previousState != null && create_previousState() != null) {
+    previousState.grid = create_previousState()
+  }
 
+  // ----------------------------------------------------
   // Reload the game from a previous game if present
   if (previousState) {
     this.grid = new Grid(previousState.grid.size,
@@ -69,7 +76,7 @@ GameManager.prototype.addStartTiles = function () {
 // Adds a tile in a random position
 GameManager.prototype.addRandomTile = function () {
   if (this.grid.cellsAvailable()) {
-    var value = Math.random() < 0.9 ? 4 : 2;
+    var value = Math.random() < 0.9 ? 2 : 4;
     var tile = new Tile(this.grid.randomAvailableCell(), value);
 
     this.grid.insertTile(tile);
@@ -139,7 +146,6 @@ GameManager.prototype.move = function (direction) {
   var vector = this.getVector(direction);
   var traversals = this.buildTraversals(vector);
   var moved = false;
-
   // Save the current tile positions and remove merger information
   this.prepareTiles();
 
@@ -189,8 +195,7 @@ GameManager.prototype.move = function (direction) {
 
     this.actuate();
   }
-  console.log(this.AI.speed)
-  setTimeout(() => { this.move(this.AI.GetNextStep()) }, this.AI.speed)
+  return self.grid
 };
 
 // Get the vector representing the chosen direction
@@ -243,6 +248,7 @@ GameManager.prototype.movesAvailable = function () {
 };
 
 // Check for available matches between tiles (more expensive check)
+// 是否結束
 GameManager.prototype.tileMatchesAvailable = function () {
   var self = this;
 
