@@ -107,7 +107,7 @@ class GameAI {
     heuristics(grid) {
         for (let x = 0; x < grid.length; x++) {
             for (let y = 0; y < grid.length; y++) {
-              
+
             }
         }
     }
