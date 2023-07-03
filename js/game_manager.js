@@ -12,7 +12,7 @@ function GameManager(size, InputManager, Actuator, StorageManager) {
   
   this.setup();
   // ---------------------------
-  this.keepPlaying = true;
+  // this.keepPlaying = true;
   // ---------------------------
 }
 
