@@ -80,13 +80,16 @@
     </div>
     <p class="game-explanation">
     <h2 class="AIplayer">AI 玩家(AI Player)</h2>
-    <label class="switch">
-      <input type="checkbox" id = "AIisOpen">
-      <span class="slider"></span>
-    </label>
+    <div class="AI-player">
+      <label class="switch">
+        <input type="checkbox" id="AIisOpen">
+        <span class="slider"></span>
+      </label>
+      <a class="one-step-button" id='OneStep'>執行一步(one step)</a>
+    </div>
     <div class="AIinput-container">
       <label for="myInput">執行一步的間隔(Execution step interval) :</label>
-      <input type="number" id="AIinput" value="300">
+      <input type="number" id="AIinput" value="70">
       <label for="myInput">毫秒(ms)</label>
     </div>
     </p>

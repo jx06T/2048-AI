@@ -1,3 +1,25 @@
+.one-step-button {
+    width: 180px;
+    height: 34px;
+    font-family: "Clear Sans", "Helvetica Neue", Arial, sans-serif;
+    font-size: 18px;
+    line-height: 35px;
+    text-align: center;
+    letter-spacing: normal;
+    color: #ffffff;
+    fill: #f9f6f2;
+    background: #8f7a66;
+    box-shadow: none;
+    border-radius: 3px;
+    margin-left: 30px;
+    text-decoration: none;
+}
+
+.AI-player {
+    display: flex;
+}
+
+
 .switch {
     position: relative;
     display: inline-block;
@@ -40,18 +62,23 @@ input:checked+.slider {
 input:checked+.slider:before {
     transform: translateX(26px);
 }
-.AIplayer{
-    margin-bottom: 10px;
+
+.AIplayer {
+    margin-bottom: 12px;
+    margin-top: 0px;
 }
+
 #AIinput {
     border: 1px solid #bba590;
     background-color: #fff6e4;
     height: 20px;
 }
-.AIinput-container{
+
+.AIinput-container {
     margin-top: 10px;
 }
+
 #AIinput:focus {
     outline: 0;
     border: 2px solid #bba590;
-  }
+}
