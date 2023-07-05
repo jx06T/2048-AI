@@ -19,15 +19,23 @@ let temp_EXECUTION_STEP_INTERVAL = EXECUTION_STEP_INTERVAL
 function step(timestamp) {
     if (temp_EXECUTION_STEP_INTERVAL == -1 || (jx06_GameManager.keepPlaying || !jx06_GameManager.won) && !jx06_GameManager.over && timestamp - LastTimestamp > temp_EXECUTION_STEP_INTERVAL && isAI_OPEN) {
         next = AI.GetNextStep()
-        if (next == null) {
+        if (next == undefined) {
+            grid = jx06_GameManager.grid
+            console.log(grid)
+        } else if (next == null) {
             temp_EXECUTION_STEP_INTERVAL = 5
+            window.requestAnimationFrame(step);
             return
+        } else {
+            grid = jx06_GameManager.move(next)
         }
-        grid = jx06_GameManager.move(next)
         LastTimestamp = timestamp
         grid = AI.GridToGrid(grid)
         AI.calculation(grid)
         temp_EXECUTION_STEP_INTERVAL = EXECUTION_STEP_INTERVAL
+    }
+    if (jx06_GameManager.over) {
+        AI.next = undefined
     }
     window.requestAnimationFrame(step);
 }

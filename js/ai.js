@@ -2,9 +2,8 @@ class GameAI {
     constructor() {
         this.DirectionScore = { 0: 0, 1: 0, 2: 0, 3: 0 }
         this.next = Math.floor(Math.random() * 4)
-        this.NowD = -1
-        this.EdgeX = [0, 0, 0, 0, 1, 1, 2, 2, 3, 3, 3, 3]
-        this.EdgeY = [1, 0, 2, 3, 0, 3, 0, 3, 0, 1, 2, 3]
+        this.EdgeX = [0, 0, 3, 3, 0, 0, 0, 0, 1, 1, 2, 2, 3, 3, 3, 3]
+        this.EdgeY = [0, 3, 0, 3, 1, 0, 2, 3, 0, 3, 0, 3, 0, 1, 2, 3]
     }
     GetNextStep() {
         let next = this.next
@@ -23,21 +22,22 @@ class GameAI {
 
 
     calculation(NowGrid) {
-        console.log(NowGrid)
         // let StartTime = Date.now()
-        this.DirectionScore = { 0: 0, 1: 0, 2: 0, 3: 0 }
+        let best = null
+        let BestScore = -Infinity
         for (let i = 0; i < 4; i++) {
-            this.NowD = i
             let grid = this.move(i, recursiveClone(NowGrid))
             if (grid[0] == null) {//不能移動
-                this.DirectionScore[i] = -10000000
                 continue
             }
-            this.DirectionScore[i] += grid[1] * 2
-            this.DirectionScore[i] += this.Jcomputer(grid[0], 2)
+            let score = this.expectimax(grid[0], 5, false)
+            score += grid[1] * 2.5
+            if (score > BestScore) {
+                BestScore = score
+                best = i
+            }
         }
-        console.log(this.DirectionScore)
-        this.next = this.BestD(this.DirectionScore)
+        this.next = best
         // console.log((Date.now() - StartTime) / 1000)
     }
     move(d, grid) {
@@ -68,76 +68,64 @@ class GameAI {
     }
     ChangeGrid(grid) {
         let NewGrid = [[], [], [], []]
-        for (let x = 0; x < grid.length; x++) {
-            for (let y = 0; y < grid.length; y++) {
+        for (let x = 0; x < 4; x++) {
+            for (let y = 0; y < 4; y++) {
                 NewGrid[x].push(grid[y][x])
             }
         }
         return NewGrid
     }
-
-    Jcomputer(grid, steps) {
-        let grades = 0
-        let count = 0
-        if (steps < 1) {
-            return 0
+    expectimax(grid, depth, isJplayer) {
+        if (depth == 0) {
+            // console.log(this.heuristics(grid))
+            return this.heuristics(grid)
         }
-        for (let x = 0; x < grid.length; x++) {
-            for (let y = 0; y < grid.length; y++) {
-                if (grid[y][x] == 0) {
-                    count++
-                    grid[y][x] = 2
-                    grades += 0.8 * this.Jplayer(grid, steps)
-                    grid[y][x] = 4
-                    grades += 0.2 * this.Jplayer(grid, steps)
-                    grid[y][x] = 0
+        if (isJplayer) {
+            let BestScore = 0
+            for (let i = 0; i < 4; i++) {
+                let NewGrid = this.move(i, recursiveClone(grid))
+                if (NewGrid[0] == null) {
+                    continue
+                }
+                let score = this.expectimax(NewGrid[0], depth - 1, false)
+                score += NewGrid[1] * 2
+                BestScore = Math.max(BestScore, score)
+            }
+            return BestScore
+        } else {
+            let count = 0
+            let AllScole = 0
+            for (let x = 0; x < 4; x++) {
+                for (let y = 0; y < 4; y++) {
+                    if (grid[y][x] == 0) {
+                        count++
+                        grid[y][x] = 2
+                        AllScole += 0.8 * this.expectimax(grid, depth - 1, true)
+                        grid[y][x] = 4
+                        AllScole += 0.2 * this.expectimax(grid, depth - 1, true)
+                        grid[y][x] = 0
+                    }
                 }
             }
+            return AllScole / count
         }
-        return grades / count
-    }
-    Jplayer(NowGrid, steps) {
-        steps--
-        let grades = 0
-        for (let i = 0; i < 4; i++) {
-            grid = this.move(i, recursiveClone(NowGrid))
-            // grades += grid[1]*0.1
-            if (grid[0] == null) {
-                return grades
-            }
-            grades += this.heuristics(grid[0])
-            grades += this.Jcomputer(grid[0], steps, grades)
-        }
-        return grades
     }
     heuristics(grid) {
-        let grades = 0
+        let score = 0
         for (let x = 0; x < grid.length; x++) {
             for (let y = 0; y < grid.length; y++) {
                 if (grid[y][x] == 0) {
-                    grades += 10
+                    score += 15
                 }
             }
         }
         for (let i = 0; i < 12; i++) {
-            if (grid[this.EdgeY[i]][this.EdgeX[i]]>64) {
-                grades += 50
-            }
+            // if (grid[this.EdgeY[i]][this.EdgeX[i]] > 64) {
+            score += grid[this.EdgeY[i]][this.EdgeX[i]] / 2
+            // }
 
         }
-        return grades
-    }
-    BestD(AllD) {
-        let max = -Infinity;
-        let maxIndex = -1;
-
-        for (let i = 0; i < 4; i++) {
-            if (AllD[i] > max) {
-                max = this.DirectionScore[i];
-                maxIndex = i;
-            }
-        }
-        return maxIndex
+        return score
     }
 }
 
@@ -149,8 +137,8 @@ function recursiveClone(val) {
 function create_previousState() {
     grid = [[],
     [],
-    [],
-    [2, 2, 2, 2]]
+    [2],
+    [2, 2, 4, 8]]
     grid = null
     if (grid == null) {
         return null
